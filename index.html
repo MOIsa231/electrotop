@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroTop.com: Celulares, PlayStation 5, Nintendo Switch 2 y Electrónica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        amazon: {
+                            dark:  '#1B3D81',
+                            lightdark: '#1B3D81',
+                            yellow: '#febd69',
+                            yellowHover: '#f3a847',
+                            orange: '#ff9900',
+                            btnYellow: '#ffd814',
+                            btnYellowHover: '#f7ca00',
+                            btnOrange: '#ffa41c',
+                            btnOrangeHover: '#fa8900',
+                            bg: '#eaeded',
+                            blueLink: '#007185',
+                            redPrice: '#cc0c39'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #eaeded;
+            color: #31279d;
+            overflow-x: hidden;
+        }
+
+        .nav-hover {
+            border: 1px solid transparent;
+            border-radius: 3px;
+            transition: border-color 0.15s ease;
+        }
+        .nav-hover:hover {
+            border-color: #ffffff;
+        }
+
+        .hero-gradient-mask {
+            mask-image: linear-gradient(to bottom, rgb(113, 68, 141) 60%, rgba(69, 21, 147, 0) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+        }
+
+        @keyframes pulseBolt {
+            0%, 100% { filter: drop-shadow(0 0 4px rgba(255, 153, 0, 0.7)); }
+            50% { filter: drop-shadow(0 0 10px rgba(254, 189, 105, 1)); }
+        }
+        .logo-bolt {
+            animation: pulseBolt 2.5s infinite ease-in-out;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased flex flex-col min-h-screen">
+
+    <header class="sticky top-0 z-40 shadow-md">
+
+        <div class="bg-amazon-dark text-white px-2 sm:px-4 py-2 flex flex-wrap lg:flex-nowrap items-center justify-between gap-2">
+            
+            <a href="#" onclick="resetFilters()" class="nav-hover flex items-center px-2 py-1 shrink-0 group">
+                <div class="flex items-center">
+                    <svg class="w-9 h-10 mr-1 logo-bolt transition-transform duration-300 group-hover:scale-105" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FFF066" />
+                                <stop offset="45%" stop-color="#FEBD69" />
+                                <stop offset="100%" stop-color="#FF8800" />
+                            </linearGradient>
+                        </defs>
+
+                        <path d="M46 4L14 34H30L18 68L54 34H36L46 4Z" fill="url(#boltGrad)" stroke="#FF9900" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M16 32H46L41 39H12L16 32Z" fill="#FEBD69"/>
+                        <path d="M14 56H46L40 64H10L14 56Z" fill="#FF9900"/>
+                    </svg>
+                    <div class="flex flex-col leading-none">
+                        <div class="flex items-baseline tracking-tight">
+                            <span class="text-xl sm:text-2xl font-extrabold text-white">Electro</span>
+                            <span class="text-xl sm:text-2xl font-extrabold text-amazon-orange">Top</span>
+                            <span class="text-xs text-gray-300 ml-0.5">.com</span>
+                        </div>
+                        <svg class="w-24 h-2.5 -mt-0.5" viewBox="0 0 100 14" fill="none">
+                            <path d="M4 3C28 13 68 13 92 4" stroke="#FF9900" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M87 1L95 4L89 10" stroke="#FF9900" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <button onclick="openLocationModal()" class="nav-hover hidden md:flex items-center px-2 py-1.5 text-left shrink-0">
+                <i class="fa-solid fa-location-dot text-white text-base mr-1.5 mt-2"></i>
+                <div class="leading-tight">
+                    <span class="block text-[11px] text-gray-300">Enviar a</span>
+                    <span id="user-location" class="block text-xs sm:text-sm font-bold text-white">Venezuela / Global</span>
+                </div>
+            </button>
+            <div class="order-3 lg:order-2 w-full lg:flex-1 flex items-center h-10 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-amazon-orange bg-white">
+                <select id="search-category-select" onchange="filterBySelect(this.value)" aria-label="Seleccionar categoría" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs sm:text-sm h-full px-2 sm:px-3 border-r border-gray-300 outline-none cursor-pointer max-w-[115px] sm:max-w-[150px] truncate">
+                    <option value="Todos">Todos</option>
+                    <option value="Celulares Android">Android</option>
+                    <option value="iPhone">iPhone</option>
+                    <option value="Consolas">Consolas</option>
+                    <option value="Accesorios/Otros">Electrónica</option>
+                </select>
+            
+                <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Buscar en ElectroTop: iPhone 16 Pro, PS5, Nintendo Switch 2, Galaxy S24..." class="w-full h-full px-3 text-sm text-gray-900 outline-none placeholder-gray-500">
+                <button id="clear-search-btn" onclick="clearSearch()" class="hidden text-gray-400 hover:text-gray-700 px-2 h-full" title="Limpiar búsqueda">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <button onclick="handleSearch()" aria-label="Buscar" class="bg-amazon-yellow hover:bg-amazon-yellowHover text-amazon-dark h-full px-4 flex items-center justify-center transition-colors shrink-0">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                </button>
+            </div>
+
+            <div class="order-2 lg:order-3 flex items-center gap-1 sm:gap-2 shrink-0">
+                <button onclick="openAccountModal()" class="nav-hover px-2 py-1 text-left leading-tight">
+                    <span id="account-greeting" class="block text-[11px] text-gray-200">Hola, Identifícate</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white">Cuenta y Listas <i class="fa-solid fa-caret-down text-[10px] text-gray-400"></i></span>
+                </button>
+                <button onclick="showToast('Revisa tus pedidos recientes en tu perfil de ElectroTop.')" class="nav-hover hidden sm:block px-2 py-1 text-left leading-tight">
+                    <span class="block text-[11px] text-gray-200">Devoluciones</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white">y Pedidos</span>
+                </button>
+                <button onclick="toggleCartDrawer(true)" class="nav-hover flex items-end px-2 py-1.5 relative group">
+                    <div class="relative flex items-center">
+                        <i class="fa-solid fa-cart-shopping text-2xl sm:text-3xl text-white"></i>
+                        <span id="cart-badge" class="absolute -top-2 left-3.5 bg-amazon-orange text-amazon-dark font-extrabold text-xs sm:text-sm w-5 h-5 rounded-full flex items-center justify-center shadow">0</span>
+                    </div>
+                    <span class="hidden sm:inline-block font-bold text-sm ml-1.5 mb-0.5">Carrito</span>
+                </button>
+            </div>
+        </div>
+
+        <nav class="bg-amazon-lightdark text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar">
+            <button onclick="filterCategory('Todos', this)" class="cat-pill active-pill nav-hover px-2.5 py-1 font-bold flex items-center gap-1.5 shrink-0 bg-white/10 rounded">
+                <i class="fa-solid fa-bars"></i> Todos
+            </button>
+            <button onclick="filterCategory('Celulares Android', this)" class="cat-pill nav-hover px-2.5 py-1 shrink-0">
+                Celulares Android
+            </button>
+            <button onclick="filterCategory('iPhone', this)" class="cat-pill nav-hover px-2.5 py-1 shrink-0">
+                Apple iPhone
+            </button>
+            <button onclick="filterCategory('Consolas', this)" class="cat-pill nav-hover px-2.5 py-1 shrink-0 flex items-center gap-1">
+                Consolas <span class="bg-amazon-orange text-amazon-dark text-[10px] font-extrabold px-1.5 py-0.2 rounded-sm"></span>
+            </button>
+            <button onclick="filterCategory('Accesorios/Otros', this)" class="cat-pill nav-hover px-2.5 py-1 shrink-0">
+                Accesorios y Otros
+            </button>
+            <button onclick="filterDealsOnly()" class="nav-hover px-2.5 py-1 shrink-0 text-amazon-yellow font-medium">
+                <i class="fa-solid fa-bolt mr-1"></i>Ofertas Relámpago
+            </button>
+            <span class="hidden xl:inline-block ml-auto text-xs text-gray-300 font-medium">
+                Envío Gratis en pedidos mayores a $50 con <span class="text-sky-400 font-bold italic">ElectroPrime</span>
+            </span>
+        </nav>
+    </header>
+
+    <main class="flex-1 max-w-[1500px] w-full mx-auto pb-12">
+
+        <section class="relative w-full overflow-hidden">
+            <div id="hero-carousel" class="relative h-[280px] sm:h-[360px] md:h-[420px] w-full transition-all duration-500">
+                <div class="hero-slide absolute inset-0 bg-gradient-to-r from-[#0b132b] via-[#1c2541] to-[#3a506b] text-white flex items-center hero-gradient-mask transition-opacity duration-700 opacity-100">
+                    <div class="container mx-auto px-6 sm:px-14 flex flex-col md:flex-row items-center justify-between gap-6 -mt-8 sm:-mt-12">
+                        <div class="max-w-xl space-y-2 sm:space-y-3 z-10">
+                            <span class="inline-block bg-amazon-orange text-amazon-dark text-xs font-extrabold uppercase tracking-wider px-2.5 py-1 rounded">
+                                <i class="fa-solid fa-bolt mr-1"></i> Lanzamientos Exclusivos
+                            </span>
+                            <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
+                                Nueva Generación Gaming: <span class="text-amazon-yellow">PS5 Pro & Switch 2</span>
+                            </h1>
+                            <p class="text-xs sm:text-base text-gray-200">
+                                Experimenta gráficos 4K ultrarrápidos y portabilidad sin límites. Stock limitado con envío inmediato.
+                            </p>
+                            <div class="pt-1">
+                                <button onclick="filterCategory('Consolas')" class="bg-amazon-btnYellow hover:bg-amazon-btnYellowHover text-amazon-dark font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-lg transition transform hover:scale-105">
+                                    Explorar Consolas Ahora
+                                </button>
+                            </div>
+                        </div>
+                        <div class="hidden md:flex items-center justify-center relative">
+                            <div class="w-64 h-64 rounded-full bg-amazon-orange/20 blur-2xl absolute"></div>
+                            <svg class="w-60 h-52 relative z-10 drop-shadow-2xl" viewBox="0 0 240 200" fill="none">
+                                <rect x="35" y="55" width="170" height="90" rx="45" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="3"/>
+                                <rect x="65" y="75" width="110" height="50" rx="12" fill="#0F172A"/>
+                                <circle cx="85" cy="100" r="10" fill="#334155" stroke="#38BDF8" stroke-width="2"/>
+                                <circle cx="155" cy="100" r="10" fill="#334155" stroke="#F97316" stroke-width="2"/>
+                                <path d="M120 65V135" stroke="#38BDF8" stroke-width="2" stroke-dasharray="4 4"/>
+                                <path d="M126 20L102 52H118L110 80L138 46H122L126 20Z" fill="#FEBD69"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-slide absolute inset-0 bg-gradient-to-r from-[#1a1a2e] via-[#16213e] to-[#0f3460] text-white flex items-center hero-gradient-mask transition-opacity duration-700 opacity-0 pointer-events-none">
+                    <div class="container mx-auto px-6 sm:px-14 flex flex-col md:flex-row items-center justify-between gap-6 -mt-8 sm:-mt-12">
+                        <div class="max-w-xl space-y-2 sm:space-y-3 z-10">
+                            <span class="inline-block bg-sky-400 text-amazon-dark text-xs font-extrabold uppercase tracking-wider px-2.5 py-1 rounded">
+                                Semana del Smartphone
+                            </span>
+                            <h2 class="text-2xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
+                                iPhone 18 Pro y <span class="text-sky-300">Galaxy S26 Ultra</span>
+                            </h2>
+                            <p class="text-xs sm:text-base text-gray-200">
+                                Hasta 20% de descuento en equipos liberados de fábrica con garantía oficial ElectroTop.
+                            </p>
+                            <div class="pt-1 flex gap-3">
+                                <button onclick="filterCategory('iPhone')" class="bg-white hover:bg-gray-100 text-amazon-dark font-bold text-xs sm:text-sm px-4 py-2.5 rounded-full shadow transition">
+                                    Ver iPhone
+                                </button>
+                                <button onclick="filterCategory('Celulares Android')" class="bg-amazon-btnYellow hover:bg-amazon-btnYellowHover text-amazon-dark font-bold text-xs sm:text-sm px-4 py-2.5 rounded-full shadow transition">
+                                    Ver Android
+                                </button>
+                            </div>
+                        </div>
+                        <div class="hidden md:flex items-center justify-center">
+                            <svg class="w-56 h-52 drop-shadow-2xl" viewBox="0 0 200 200" fill="none">
+                                <rect x="35" y="20" width="65" height="140" rx="12" fill="#1E293B" stroke="#94A3B8" stroke-width="3"/>
+                                <rect x="41" y="28" width="53" height="124" rx="8" fill="#0EA5E9" fill-opacity="0.25"/>
+                                <circle cx="53" cy="40" r="5" fill="#0F172A"/>
+                                <circle cx="53" cy="54" r="5" fill="#0F172A"/>
+                                <rect x="105" y="30" width="68" height="145" rx="10" fill="#334155" stroke="#FEBD69" stroke-width="3"/>
+                                <rect x="111" y="38" width="56" height="129" rx="6" fill="#F59E0B" fill-opacity="0.2"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="prevSlide()" aria-label="Anterior" class="absolute left-2 top-1/3 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white p-3 rounded-md backdrop-blur-sm transition z-20">
+                <i class="fa-solid fa-chevron-left text-xl"></i>
+            </button>
+            <button onclick="nextSlide()" aria-label="Siguiente" class="absolute right-2 top-1/3 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white p-3 rounded-md backdrop-blur-sm transition z-20">
+                <i class="fa-solid fa-chevron-right text-xl"></i>
+            </button>
+        </section>
+        <section class="px-3 sm:px-6 -mt-16 sm:-mt-24 relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <!-- Card 1 -->
+            <div class="bg-white p-4 rounded-md shadow-sm flex flex-col justify-between">
+                <h3 class="font-bold text-lg text-gray-900 mb-2">Celulares Android Top</h3>
+                <div onclick="filterCategory('Celulares Android')" class="cursor-pointer group overflow-hidden rounded bg-gray-50 p-4 flex items-center justify-center h-40">
+                    <div class="text-center transition-transform duration-300 group-hover:scale-105">
+                        <i class="fa-brands fa-android text-6xl text-emerald-600 mb-2"></i>
+                        <p class="text-xs font-semibold text-gray-600">Galaxy S24 Ultra, Xiaomi 14 Pro y más</p>
+                    </div>
+                </div>
+                <button onclick="filterCategory('Celulares Android')" class="text-amazon-blueLink hover:text-amazon-orange hover:underline text-xs font-semibold mt-3 text-left">
+                    Ver todos los Android
+                </button>
+            </div>
+            <div class="bg-white p-4 rounded-md shadow-sm flex flex-col justify-between">
+                <h3 class="font-bold text-lg text-gray-900 mb-2">Universo Apple iPhone</h3>
+                <div onclick="filterCategory('iPhone')" class="cursor-pointer group overflow-hidden rounded bg-gray-50 p-4 flex items-center justify-center h-40">
+                    <div class="text-center transition-transform duration-300 group-hover:scale-105">
+                        <i class="fa-brands fa-apple text-6xl text-gray-800 mb-2"></i>
+                        <p class="text-xs font-semibold text-gray-600">iPhone 16 Pro, 15 Pro Max en Titanio</p>
+                    </div>
+                </div>
+                <button onclick="filterCategory('iPhone')" class="text-amazon-blueLink hover:text-amazon-orange hover:underline text-xs font-semibold mt-3 text-left">
+                    Explorar modelos iPhone
+                </button>
+            </div>
+            <div class="bg-white p-4 rounded-md shadow-sm flex flex-col justify-between">
+                <h3 class="font-bold text-lg text-gray-900 mb-2">Consolas Next-Gen</h3>
+                <div onclick="filterCategory('Consolas')" class="cursor-pointer group overflow-hidden rounded bg-gray-50 p-4 flex items-center justify-center h-40">
+                    <div class="text-center transition-transform duration-300 group-hover:scale-105">
+                        <i class="fa-solid fa-gamepad text-6xl text-indigo-600 mb-2"></i>
+                        <p class="text-xs font-semibold text-gray-600">PlayStation 5 & Nintendo Switch 2</p>
+                    </div>
+                </div>
+                <button onclick="filterCategory('Consolas')" class="text-amazon-blueLink hover:text-amazon-orange hover:underline text-xs font-semibold mt-3 text-left">
+                    Comprar consolas ahora
+                </button>
+            </div>
+            <div class="bg-white p-4 rounded-md shadow-sm flex flex-col justify-between">
+                <h3 class="font-bold text-lg text-gray-900 mb-2">Laptops, Audio y Más</h3>
+                <div onclick="filterCategory('Accesorios/Otros')" class="cursor-pointer group overflow-hidden rounded bg-gray-50 p-4 flex items-center justify-center h-40">
+                    <div class="text-center transition-transform duration-300 group-hover:scale-105">
+                        <i class="fa-solid fa-headphones-simple text-6xl text-amber-500 mb-2"></i>
+                        <p class="text-xs font-semibold text-gray-600">Laptops Gaming, Smartwatches y Monitores</p>
+                    </div>
+                </div>
+                <button onclick="filterCategory('Accesorios/Otros')" class="text-amazon-blueLink hover:text-amazon-orange hover:underline text-xs font-semibold mt-3 text-left">
+                    Descubrir electrónica
+                </button>
+            </div>
+        </section>
+        <section id="catalog-section" class="px-3 sm:px-6 mb-4">
+            <div class="bg-white p-3 sm:p-4 rounded-md shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div>
+                    <h2 id="catalog-title" class="text-lg sm:text-xl font-bold text-gray-900">Catálogo Destacado ElectroTop</h2>
+                    <p id="results-count" class="text-xs text-gray-500">Mostrando todos los productos disponibles</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex flex-wrap gap-1.5" id="filter-buttons">
+                        <button onclick="filterCategory('Todos')" data-cat="Todos" class="filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-amazon-dark text-white transition">Todos</button>
+                        <button onclick="filterCategory('Celulares Android')" data-cat="Celulares Android" class="filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-800 transition">Celulares Android</button>
+                        <button onclick="filterCategory('iPhone')" data-cat="iPhone" class="filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-800 transition">iPhone</button>
+                        <button onclick="filterCategory('Consolas')" data-cat="Consolas" class="filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-800 transition">Consolas</button>
+                        <button onclick="filterCategory('Accesorios/Otros')" data-cat="Accesorios/Otros" class="filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-800 transition">Accesorios/Otros</button>
+                    </div>
+
+                    <select id="sort-select" onchange="renderProducts()" class="bg-gray-50 border border-gray-300 text-gray-800 text-xs rounded-md px-2.5 py-1.5 outline-none focus:border-amazon-orange cursor-pointer">
+                        <option value="featured">Ordenar por: Destacados</option>
+                        <option value="price-asc">Precio: De menor a mayor</option>
+                        <option value="price-desc">Precio: De mayor a menor</option>
+                        <option value="rating">Mejor valorados</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-3 sm:px-6">
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+            </div>
+            <div id="empty-state" class="hidden bg-white rounded-md p-10 text-center shadow-sm my-4">
+                <i class="fa-solid fa-plug-circle-xmark text-5xl text-gray-300 mb-3"></i>
+                <h3 class="text-lg font-bold text-gray-800">No encontramos productos que coincidan con tu búsqueda</h3>
+                <p class="text-sm text-gray-500 mt-1 mb-4">Intenta buscar "iPhone", "PS5", "Switch 2" o explora todas las categorías.</p>
+                <button onclick="resetFilters()" class="bg-amazon-btnYellow hover:bg-amazon-btnYellowHover text-amazon-dark font-bold text-sm px-5 py-2 rounded-full">
+                    Ver todo el catálogo
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-amazon-lightdark text-white mt-auto">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-full bg-[#37475a] hover:bg-[#485769] text-white text-xs sm:text-sm font-medium py-3.5 transition">
+            Inicio de página
+        </button>
+
+        <div class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-xs sm:text-sm">
+            <div>
+                <h4 class="font-bold text-white mb-3">Conócenos</h4>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:underline">Sobre ElectroTop</a></li>
+                    <li><a href="#" class="hover:underline">Trabaja con nosotros</a></li>
+                    <li><a href="#" class="hover:underline">Sostenibilidad y Tecnología</a></li>
+                    <li><a href="#" class="hover:underline">Centro de prensa</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-3">Gana dinero con nosotros</h4>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:underline">Vende en ElectroTop</a></li>
+                    <li><a href="#" class="hover:underline">Programa de Afiliados</a></li>
+                    <li><a href="#" class="hover:underline">Anuncia tus productos</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-3">Métodos de Pago</h4>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:underline">Tarjetas de Crédito y Débito</a></li>
+                    <li><a href="#" class="hover:underline">Pagos en Cuotas sin Interés</a></li>
+                    <li><a href="#" class="hover:underline">Tarjetas de Regalo ElectroTop</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-white mb-3">Podemos ayudarte</h4>
+                <ul class="space-y-2 text-gray-300">
+                    <li><a href="#" class="hover:underline">Rastrea tu paquete</a></li>
+                    <li><a href="#" class="hover:underline">Tarifas y políticas de envío</a></li>
+                    <li><a href="#" class="hover:underline">Devoluciones y Garantías</a></li>
+                    <li><a href="#" class="hover:underline">Atención al Cliente 24/7</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="bg-amazon-dark border-t border-gray-700 py-6 px-4 text-center">
+            <div class="inline-flex items-center justify-center mb-2">
+                <svg class="w-6 h-7 mr-1" viewBox="0 0 64 72" fill="none">
+                    <path d="M46 4L14 34H30L18 68L54 34H36L46 4Z" fill="#FEBD69" stroke="#FF9900" stroke-width="2"/>
+                </svg>
+                <span class="text-lg font-extrabold text-white">Electro<span class="text-amazon-orange">Top</span></span>
+            </div>
+            <p class="text-xs text-gray-400">© 2026 ElectroTop.com, Inc. o sus afiliados. Todos los derechos reservados.</p>
+            <p class="font-bold text-white mb-3">Rodnel Hernández y Moises Soto</p>
+        </div>
+    </footer>
+    <div id="cart-overlay" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-black/60 z-50 hidden transition-opacity"></div>
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="bg-amazon-dark text-white px-5 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-cart-shopping text-amazon-orange text-xl"></i>
+                <h2 class="font-bold text-lg">Tu Carrito ElectroTop</h2>
+            </div>
+            <button onclick="toggleCartDrawer(false)" class="text-gray-300 hover:text-white p-1">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        <div id="free-shipping-bar" class="bg-emerald-50 border-b border-emerald-200 px-5 py-2.5 text-xs text-emerald-800 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+            <span>Tu pedido califica para <strong>Envío GRATIS con ElectroPrime</strong>.</span>
+        </div>
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-3">
+        </div>
+        <div class="border-t border-gray-200 p-4 bg-gray-50">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-sm text-gray-600">Subtotal (<span id="cart-total-items">0</span> productos):</span>
+                <span id="cart-subtotal" class="text-xl font-extrabold text-gray-900">$0.00</span>
+            </div>
+            <p class="text-[11px] text-gray-500 mb-3">Impuestos calculados al finalizar la compra.</p>
+            <button onclick="checkout()" id="checkout-btn" class="w-full bg-amazon-btnYellow hover:bg-amazon-btnYellowHover disabled:opacity-50 text-amazon-dark font-bold py-2.5 rounded-full shadow-sm transition text-sm">
+                Comprar
+            </button>
+        </div>
+    </aside>
+    <div id="quickview-modal" class="fixed inset-0 bg-black/65 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full overflow-hidden shadow-2xl animate-fadeIn relative">
+            <button onclick="closeQuickView()" class="absolute top-3 right-3 bg-gray-100 hover:bg-gray-200 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center transition z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="quickview-content" class="grid grid-cols-1 md:grid-cols-2">
+            </div>
+        </div>
+    </div>
+    <div id="location-modal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-sm w-full overflow-hidden shadow-xl">
+            <div class="bg-gray-100 px-4 py-3 border-b font-bold text-sm flex justify-between items-center">
+                <span>Elige tu ubicación de entrega</span>
+                <button onclick="closeLocationModal()" class="text-gray-500 hover:text-gray-800"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-4 space-y-3">
+                <p class="text-xs text-gray-600">Las opciones y velocidades de envío pueden variar según la ubicación.</p>
+                <select id="country-select" class="w-full border border-gray-300 rounded-md p-2 text-sm outline-none focus:border-amazon-orange">
+                    <option value="Venezuela / Global">Venezuela (Envío Internacional)</option>
+                    <option value="Estados Unidos">Estados Unidos (Prime 1-Día)</option>
+                    <option value="España">España (Envío Express)</option>
+                    <option value="México">México (Envío Nacional)</option>
+                    <option value="Colombia">Colombia (Envío Express)</option>
+                    <option value="Argentina">Argentina (Envío Internacional)</option>
+                </select>
+                <button onclick="saveLocation()" class="w-full bg-amazon-btnYellow hover:bg-amazon-btnYellowHover text-amazon-dark font-bold py-2 rounded-full text-sm">
+                    Listo
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="account-modal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-sm w-full overflow-hidden shadow-xl">
+            <div class="bg-amazon-dark text-white px-4 py-3 flex justify-between items-center">
+                <span class="font-bold text-sm">Iniciar sesión en ElectroTop</span>
+                <button onclick="closeAccountModal()" class="text-gray-300 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleLogin(event)" class="p-5 space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Tu nombre</label>
+                    <input type="text" id="login-name" required placeholder="Ej. Carlos Pérez" class="w-full border border-gray-300 rounded px-3 py-2 text-sm outline-none focus:border-amazon-orange">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Correo electrónico</label>
+                    <input type="email" required placeholder="usuario@electrotop.com" class="w-full border border-gray-300 rounded px-3 py-2 text-sm outline-none focus:border-amazon-orange">
+                </div>
+                <button type="submit" class="w-full bg-amazon-btnYellow hover:bg-amazon-btnYellowHover text-amazon-dark font-bold py-2 rounded-full text-sm shadow-sm">
+                    Continuar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="fixed bottom-5 right-5 bg-amazon-dark text-white px-4 py-3 rounded-lg shadow-xl border-l-4 border-amazon-orange flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50 max-w-sm">
+        <i class="fa-solid fa-bolt text-amazon-yellow text-lg"></i>
+        <span id="toast-message" class="text-xs sm:text-sm font-medium">Producto añadido al carrito</span>
+    </div>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "PlayStation 5 Pro Digital Edition 2TB + Control DualSense",
+                category: "Consolas",
+                price: 699.99,
+                oldPrice: 749.99,
+                rating: 4.9,
+                reviews: 3420,
+                badge: "Más Vendido",
+                prime: true,
+                specs: "GPU mejorada con Ray Tracing avanzado, SSD ultrarrápido de 2TB, soporte 4K a 120Hz y Wi-Fi 7.",
+                svgType: "ps5"
+            },
+            {
+                id: 2,
+                name: "Nintendo Switch 2 - Edición OLED 8\" + Joy-Con Magnéticos",
+                category: "Consolas",
+                price: 399.00,
+                oldPrice: 449.00,
+                rating: 4.9,
+                reviews: 5180,
+                badge: "Nuevo Lanzamiento",
+                prime: true,
+                specs: "Pantalla táctil de 8 pulgadas 1080p, dock con salida 4K DLSS, retrocompatibilidad total y nuevos Joy-Con magnéticos.",
+                svgType: "switch2"
+            },
+            {
+                id: 3,
+                name: "Apple iPhone 16 Pro Max (256 GB) - Titanio Desierto",
+                category: "iPhone",
+                price: 1199.00,
+                oldPrice: 1299.00,
+                rating: 4.8,
+                reviews: 2890,
+                badge: "Elección ElectroTop",
+                prime: true,
+                specs: "Chip A18 Pro, pantalla Super Retina XDR de 6.9\", botón Control de Cámara y grabación 4K Dolby Vision a 120 fps.",
+                svgType: "iphone16"
+            },
+            {
+                id: 4,
+                name: "Samsung Galaxy S24 Ultra 5G (512 GB) + S-Pen Integrado",
+                category: "Celulares Android",
+                price: 1049.99,
+                oldPrice: 1299.99,
+                rating: 4.8,
+                reviews: 4120,
+                badge: "Oferta -19%",
+                prime: true,
+                specs: "Procesador Snapdragon 8 Gen 3, cámara principal de 200MP con Galaxy AI, marco de titanio y pantalla QHD+ AMOLED.",
+                svgType: "s24ultra"
+            },
+            {
+                id: 5,
+                name: "Apple iPhone 15 Pro (128 GB) - Titanio Azul Liberado",
+                category: "iPhone",
+                price: 899.00,
+                oldPrice: 999.00,
+                rating: 4.7,
+                reviews: 6310,
+                badge: "Envío Rápido",
+                prime: true,
+                specs: "Diseño ligero de titanio aeroespacial, chip A17 Pro, puerto USB-C de alta velocidad y sistema de cámaras Pro.",
+                svgType: "iphone15"
+            },
+            {
+                id: 6,
+                name: "Xiaomi 14 Pro Leica Edition (12GB RAM, 512GB) - Negro",
+                category: "Celulares Android",
+                price: 789.00,
+                oldPrice: 899.00,
+                rating: 4.7,
+                reviews: 1540,
+                badge: "Cámara Leica",
+                prime: true,
+                specs: "Lentes ópticos Leica Summilux, carga HyperCharge de 120W (0 a 100% en 18 min) y pantalla AMOLED LTPO 120Hz.",
+                svgType: "xiaomi14"
+            },
+            {
+                id: 7,
+                name: "PlayStation 5 Slim Edición Estándar con Lector de Discos 1TB",
+                category: "Consolas",
+                price: 479.00,
+                oldPrice: 529.99,
+                rating: 4.9,
+                reviews: 8920,
+                badge: "Top Ventas",
+                prime: true,
+                specs: "Diseño 30% más compacto, almacenamiento SSD de 1TB, audio 3D Tempest y retroalimentación háptica DualSense.",
+                svgType: "ps5slim"
+            },
+            {
+                id: 8,
+                name: "Google Pixel 9 Pro XL (256 GB) - Obsidiana con Gemini AI",
+                category: "Celulares Android",
+                price: 949.00,
+                oldPrice: 1099.00,
+                rating: 4.6,
+                reviews: 980,
+                badge: "Android Puro",
+                prime: true,
+                specs: "Chip Google Tensor G4, 16GB de RAM, pantalla Super Actua de 6.8\" y 7 años de actualizaciones de seguridad.",
+                svgType: "pixel9"
+            },
+            {
+                id: 9,
+                name: "Audífonos Sony WH-1000XM5 Cancelación de Ruido Inalámbricos",
+                category: "Accesorios/Otros",
+                price: 328.00,
+                oldPrice: 399.99,
+                rating: 4.8,
+                reviews: 7450,
+                badge: "Audio Premium",
+                prime: true,
+                specs: "Cancelación de ruido líder en la industria con 8 micrófonos, 30 horas de batería y carga rápida USB-C.",
+                svgType: "headphones"
+            },
+            {
+                id: 10,
+                name: "Laptop Gaming ASUS ROG Strix G16 - RTX 4070, Core i9, 16GB",
+                category: "Accesorios/Otros",
+                price: 1499.00,
+                oldPrice: 1799.00,
+                rating: 4.8,
+                reviews: 1210,
+                badge: "Oferta Relámpago",
+                prime: true,
+                specs: "Pantalla Nebula 16\" 240Hz, Intel Core i9-13980HX, NVIDIA GeForce RTX 4070 y refrigeración con metal líquido.",
+                svgType: "laptop"
+            },
+            {
+                id: 11,
+                name: "Apple Watch Ultra 2 GPS + Cellular 49mm Caja de Titanio",
+                category: "Accesorios/Otros",
+                price: 749.00,
+                oldPrice: 799.00,
+                rating: 4.9,
+                reviews: 2310,
+                badge: "Resistente",
+                prime: true,
+                specs: "Pantalla de 3000 nits, hasta 36 horas de batería, GPS de doble frecuencia de precisión y resistencia al agua 100m.",
+                svgType: "watch"
+            },
+            {
+                id: 12,
+                name: "Monitor Curvo Gaming Samsung Odyssey G7 32\" QHD 240Hz",
+                category: "Accesorios/Otros",
+                price: 549.99,
+                oldPrice: 699.99,
+                rating: 4.7,
+                reviews: 1890,
+                badge: "Ahorra $150",
+                prime: true,
+                specs: "Curvatura 1000R inmersiva, tiempo de respuesta de 1ms, compatible con NVIDIA G-Sync y FreeSync Premium Pro.",
+                svgType: "monitor"
+            }
+        ];
+
+        function getProductIllustration(type) {
+            const svgs = {
+                ps5: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <path d="M72 18C72 14 78 12 84 14L124 26C128 28 130 32 130 36V138C130 142 126 144 122 142L72 128V18Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2.5"/>
+                        <path d="M84 22H116V134H84V22Z" fill="#0F172A"/>
+                        <path d="M88 26V130" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M112 26V130" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round"/>
+                        <line x1="84" y1="62" x2="116" y2="62" stroke="#334155" stroke-width="2"/>
+                        <line x1="84" y1="96" x2="116" y2="96" stroke="#334155" stroke-width="2"/>
+                        <ellipse cx="100" cy="144" rx="34" ry="5" fill="#1E293B"/>
+                      </svg>`,
+                ps5slim: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <rect x="75" y="22" width="50" height="118" rx="8" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2.5"/>
+                        <rect x="92" y="22" width="16" height="118" fill="#0F172A"/>
+                        <line x1="75" y1="78" x2="125" y2="78" stroke="#0F172A" stroke-width="3"/>
+                        <line x1="95" y1="26" x2="95" y2="136" stroke="#3B82F6" stroke-width="2"/>
+                        <ellipse cx="100" cy="143" rx="30" ry="4" fill="#334155"/>
+                      </svg>`,
+                switch2: `<svg viewBox="0 0 200 160" class="w-44 h-36 mx-auto drop-shadow-md">
+                        <!-- Joy-Con Izquierdo -->
+                        <path d="M40 42C28 42 22 50 22 62V98C22 110 28 118 40 118H48V42H40Z" fill="#0EA5E9"/>
+                        <circle cx="35" cy="64" r="5" fill="#0F172A"/>
+                        <circle cx="35" cy="86" r="2.5" fill="#0F172A"/>
+                        <!-- Pantalla Central -->
+                        <rect x="48" y="40" width="104" height="80" rx="4" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+                        <rect x="54" y="46" width="92" height="68" rx="2" fill="url(#swGrad)"/>
+                        <defs><linearGradient id="swGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1E293B"/><stop offset="100%" stop-color="#0284C7"/></linearGradient></defs>
+                        <text x="100" y="84" text-anchor="middle" fill="#FFF" font-size="12" font-weight="bold" font-family="sans-serif">SWITCH 2</text>
+                        <!-- Joy-Con Derecho -->
+                        <path d="M160 42C172 42 178 50 178 62V98C178 110 172 118 160 118H152V42H160Z" fill="#F97316"/>
+                        <circle cx="165" cy="88" r="5" fill="#0F172A"/>
+                        <circle cx="165" cy="64" r="2.5" fill="#0F172A"/>
+                      </svg>`,
+                iphone16: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <rect x="66" y="14" width="68" height="132" rx="14" fill="#D6C7B2" stroke="#A89882" stroke-width="3"/>
+                        <rect x="71" y="19" width="58" height="122" rx="10" fill="#1E293B"/>
+                        <rect x="90" y="23" width="20" height="5" rx="2.5" fill="#000"/>
+                        <!-- Módulo de cámaras -->
+                        <rect x="75" y="24" width="24" height="28" rx="6" fill="#C4B5A0" stroke="#8C7D6B" stroke-width="1"/>
+                        <circle cx="82" cy="31" r="4" fill="#0F172A" stroke="#475569" stroke-width="1.5"/>
+                        <circle cx="82" cy="44" r="4" fill="#0F172A" stroke="#475569" stroke-width="1.5"/>
+                        <circle cx="93" cy="38" r="3.5" fill="#0F172A" stroke="#475569" stroke-width="1.5"/>
+                      </svg>`,
+                iphone18: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <rect x="68" y="16" width="64" height="128" rx="13" fill="#3B4D61" stroke="#1E293B" stroke-width="3"/>
+                        <rect x="73" y="21" width="54" height="118" rx="9" fill="#0F172A"/>
+                        <rect x="91" y="25" width="18" height="4.5" rx="2" fill="#000"/>
+                        <circle cx="100" cy="80" r="18" fill="#1D4ED8" fill-opacity="0.35"/>
+                      </svg>`,
+                s26ultra: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <rect x="62" y="14" width="68" height="132" rx="4" fill="#334155" stroke="#94A3B8" stroke-width="2.5"/>
+                        <rect x="66" y="18" width="60" height="124" rx="2" fill="#0F172A"/>
+                        <circle cx="96" cy="23" r="2" fill="#334155"/>
+                        <path d="M66 115L126 55V142H66V115Z" fill="#F59E0B" fill-opacity="0.25"/>
+                        <!-- S-Pen -->
+                        <rect x="138" y="28" width="5" height="114" rx="2" fill="#94A3B8"/>
+                        <polygon points="138,28 143,28 140.5,21" fill="#F59E0B"/>
+                      </svg>`,
+                xiaomi14: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <rect x="66" y="15" width="68" height="130" rx="11" fill="#18181B" stroke="#52525B" stroke-width="2.5"/>
+                        <rect x="72" y="22" width="32" height="32" rx="6" fill="#09090B" stroke="#71717A" stroke-width="1.5"/>
+                        <circle cx="81" cy="31" r="4.5" fill="#27272A" stroke="#EF4444" stroke-width="1"/>
+                        <circle cx="95" cy="31" r="4.5" fill="#27272A"/>
+                        <circle cx="81" cy="45" r="4.5" fill="#27272A"/>
+                        <text x="95" y="47" fill="#EF4444" font-size="5" font-weight="bold">LEICA</text>
+                      </svg>`,
+                pixel9: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <rect x="66" y="15" width="68" height="130" rx="14" fill="#27272A" stroke="#71717A" stroke-width="2.5"/>
+                        <!-- Visor horizontal clásico de Pixel -->
+                        <rect x="70" y="34" width="60" height="18" rx="9" fill="#52525B"/>
+                        <circle cx="82" cy="43" r="4.5" fill="#09090B"/>
+                        <circle cx="95" cy="43" r="4.5" fill="#09090B"/>
+                        <circle cx="108" cy="43" r="4.5" fill="#09090B"/>
+                      </svg>`,
+                headphones: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <path d="M52 92V74C52 46 73 24 100 24C127 24 148 46 148 74V92" stroke="#1E293B" stroke-width="10" stroke-linecap="round" fill="none"/>
+                        <rect x="40" y="82" width="22" height="44" rx="11" fill="#334155" stroke="#0F172A" stroke-width="2"/>
+                        <rect x="138" y="82" width="22" height="44" rx="11" fill="#334155" stroke="#0F172A" stroke-width="2"/>
+                        <rect x="58" y="86" width="6" height="36" rx="3" fill="#94A3B8"/>
+                        <rect x="136" y="86" width="6" height="36" rx="3" fill="#94A3B8"/>
+                      </svg>`,
+                laptop: `<svg viewBox="0 0 200 160" class="w-44 h-36 mx-auto drop-shadow-md">
+                        <rect x="36" y="26" width="128" height="84" rx="6" fill="#0F172A" stroke="#475569" stroke-width="3"/>
+                        <rect x="42" y="32" width="116" height="72" fill="#1E1B4B"/>
+                        <path d="M55 90L85 52L110 78L135 45L148 90H55Z" fill="#EC4899" fill-opacity="0.6"/>
+                        <path d="M22 110H178L170 122H30L22 110Z" fill="#334155"/>
+                        <line x1="32" y1="119" x2="168" y2="119" stroke="#38BDF8" stroke-width="2"/>
+                      </svg>`,
+                watch: `<svg viewBox="0 0 200 160" class="w-40 h-36 mx-auto drop-shadow-md">
+                        <rect x="82" y="14" width="36" height="34" rx="4" fill="#F97316"/>
+                        <rect x="82" y="112" width="36" height="34" rx="4" fill="#F97316"/>
+                        <rect x="70" y="42" width="60" height="76" rx="16" fill="#CBD5E1" stroke="#64748B" stroke-width="3"/>
+                        <rect x="75" y="47" width="50" height="66" rx="12" fill="#0F172A"/>
+                        <circle cx="100" cy="80" r="18" stroke="#22C55E" stroke-width="3" fill="none"/>
+                        <text x="100" y="84" text-anchor="middle" fill="#FFF" font-size="10" font-weight="bold">10:09</text>
+                      </svg>`,
+                monitor: `<svg viewBox="0 0 200 160" class="w-44 h-36 mx-auto drop-shadow-md">
+                        <path d="M26 28Q100 38 174 28V106Q100 116 26 106Z" fill="#0F172A" stroke="#334155" stroke-width="3"/>
+                        <path d="M32 34Q100 43 168 34V100Q100 109 32 100Z" fill="#0284C7" fill-opacity="0.3"/>
+                        <rect x="93" y="108" width="14" height="24" fill="#475569"/>
+                        <path d="M68 134L100 126L132 134" stroke="#38BDF8" stroke-width="3" fill="none" stroke-linecap="round"/>
+                      </svg>`
+            };
+            return svgs[type] || svgs.iphone18;
+        }
+
+        let currentCategory = 'Todos';
+        let currentSearch = '';
+        let dealsOnly = false;
+        let cart = JSON.parse(localStorage.getItem('electrotop_cart')) || [];
+
+        function renderStars(rating) {
+            let html = '';
+            const fullStars = Math.floor(rating);
+            const hasHalf = rating % 1 >= 0.5;
+            for (let i = 0; i < fullStars; i++) {
+                html += '<i class="fa-solid fa-star text-amber-400 text-xs"></i>';
+            }
+            if (hasHalf) {
+                html += '<i class="fa-solid fa-star-half-stroke text-amber-400 text-xs"></i>';
+            }
+            return html;
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const emptyState = document.getElementById('empty-state');
+            const sortBy = document.getElementById('sort-select').value;
+
+            let filtered = products.filter(p => {
+                const matchesCat = currentCategory === 'Todos' || p.category === currentCategory;
+                const matchesSearch = p.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                      p.category.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                      p.specs.toLowerCase().includes(currentSearch.toLowerCase());
+                const matchesDeals = !dealsOnly || (p.oldPrice && p.oldPrice > p.price);
+                return matchesCat && matchesSearch && matchesDeals;
+            });
+
+            // Ordenamiento
+            if (sortBy === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortBy === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortBy === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            }
+
+            document.getElementById('results-count').textContent = `Mostrando ${filtered.length} producto${filtered.length !== 1 ? 's' : ''} en ${currentCategory}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(product => {
+                const discountPercent = product.oldPrice ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100) : 0;
+                const [wholePrice, cents] = product.price.toFixed(2).split('.');
+
+                return `
+                <article class="bg-white rounded-md border border-gray-200 hover:shadow-lg transition-shadow duration-200 flex flex-col justify-between overflow-hidden group">
+                    <!-- Zona de Imagen + Badge + Vista Rápida -->
+                    <div class="relative bg-gray-50 p-4 flex items-center justify-center h-52 cursor-pointer" onclick="openQuickView(${product.id})">
+                        ${product.badge ? `
+                            <span class="absolute top-2.5 left-2.5 bg-amazon-redPrice text-white text-[11px] font-bold px-2 py-0.5 rounded-sm shadow-sm">
+                                ${product.badge}
+                            </span>
+                        ` : ''}
+                        
+                        <div class="transition-transform duration-300 group-hover:scale-105">
+                            ${getProductIllustration(product.svgType)}
+                        </div>
+
+                        <button onclick="event.stopPropagation(); openQuickView(${product.id})" class="opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-2 right-2 bg-white/95 hover:bg-white text-gray-800 text-xs font-semibold px-2.5 py-1.5 rounded shadow border border-gray-200">
+                            <i class="fa-regular fa-eye mr-1"></i>Vista rápida
+                        </button>
+                    </div>
+
+                    <!-- Información del Producto -->
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">${product.category}</span>
+                            <h3 onclick="openQuickView(${product.id})" class="text-sm sm:text-[15px] font-medium text-gray-900 hover:text-amazon-orange cursor-pointer line-clamp-2 mt-0.5 leading-snug">
+                                ${product.name}
+                            </h3>
+
+                            <!-- Estrellas y Reseñas -->
+                            <div class="flex items-center gap-1.5 mt-1.5">
+                                <div class="flex items-center">${renderStars(product.rating)}</div>
+                                <span class="text-xs text-amazon-blueLink hover:underline cursor-pointer">${product.reviews.toLocaleString()}</span>
+                            </div>
+
+                            <!-- Bloque de Precio estilo Amazon -->
+                            <div class="mt-2.5">
+                                ${discountPercent > 0 ? `
+                                    <div class="flex items-center gap-1.5 mb-0.5">
+                                        <span class="bg-amazon-redPrice text-white text-xs font-bold px-1.5 py-0.5 rounded-sm">-${discountPercent}%</span>
+                                        <span class="text-xs font-bold text-amazon-redPrice">Oferta ElectroTop</span>
+                                    </div>
+                                ` : ''}
+                                <div class="flex items-baseline gap-2">
+                                    <div class="text-gray-900 font-bold flex items-start">
+                                        <span class="text-xs mt-1">$</span>
+                                        <span class="text-2xl tracking-tight">${Number(wholePrice).toLocaleString()}</span>
+                                        <span class="text-xs mt-1">${cents}</span>
+                                    </div>
+                                    ${product.oldPrice ? `
+                                        <span class="text-xs text-gray-500 line-through">Precio rec.: $${product.oldPrice.toFixed(2)}</span>
+                                    ` : ''}
+                                </div>
+                            </div>
+
+                            <!-- Etiqueta Prime / Envío Gratis -->
+                            <div class="mt-1.5 flex items-center gap-1 text-xs">
+                                <span class="font-extrabold italic text-sky-600"><i class="fa-solid fa-bolt text-amazon-orange mr-0.5"></i>ElectroPrime</span>
+                                <span class="text-gray-600 font-medium">Envío GRATIS</span>
+                            </div>
+                        </div>
+
+                        <!-- Botón Agregar al Carrito -->
+                        <div class="mt-4 pt-2">
+                            <button onclick="addToCart(${product.id})" class="w-full bg-amazon-btnYellow hover:bg-amazon-btnYellowHover active:scale-[0.98] text-amazon-dark font-semibold text-xs sm:text-sm py-2 px-4 rounded-full shadow-sm transition cursor-pointer flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cart-plus"></i> Agregar al carrito
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                `;
+            }).join('');
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            dealsOnly = false;
+            document.getElementById('search-category-select').value = category;
+            document.getElementById('catalog-title').textContent = category === 'Todos' ? 'Catálogo Destacado ElectroTop' : `Categoría: ${category}`;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.cat === category) {
+                    btn.classList.remove('bg-gray-100', 'text-gray-800');
+                    btn.classList.add('bg-amazon-dark', 'text-white');
+                } else {
+                    btn.classList.remove('bg-amazon-dark', 'text-white');
+                    btn.classList.add('bg-gray-100', 'text-gray-800');
+                }
+            });
+
+            renderProducts();
+        }
+
+        function filterBySelect(val) {
+            filterCategory(val);
+        }
+
+        function filterDealsOnly() {
+            dealsOnly = true;
+            currentCategory = 'Todos';
+            document.getElementById('catalog-title').textContent = '⚡ Ofertas Relámpago ElectroTop';
+            renderProducts();
+            document.getElementById('catalog-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleSearch() {
+            const input = document.getElementById('search-input');
+            const clearBtn = document.getElementById('clear-search-btn');
+            currentSearch = input.value.trim();
+
+            if (currentSearch.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderProducts();
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            currentSearch = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            renderProducts();
+        }
+
+        function resetFilters() {
+            clearSearch();
+            filterCategory('Todos');
+        }
+
+        // 6. LÓGICA DEL CARRITO DE COMPRAS INTERACTIVO
+        function saveCart() {
+            localStorage.setItem('electrotop_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            saveCart();
+            showToast(`"${product.name.substring(0, 32)}..." añadido al carrito`);
+        }
+
+        function updateQty(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            saveCart();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            saveCart();
+            showToast('Producto eliminado del carrito');
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-badge');
+            const totalItemsEl = document.getElementById('cart-total-items');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            badge.textContent = totalQty;
+            totalItemsEl.textContent = totalQty;
+            subtotalEl.textContent = `$${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            if (cart.length === 0) {
+                checkoutBtn.disabled = true;
+                container.innerHTML = `
+                    <div class="text-center py-12 px-4">
+                        <i class="fa-solid fa-cart-arrow-down text-5xl text-gray-300 mb-3"></i>
+                        <h3 class="font-bold text-gray-800">Tu carrito de ElectroTop está vacío</h3>
+                        <p class="text-xs text-gray-500 mt-1 mb-4">Explora nuestras ofertas en celulares, PS5, Switch 2 y más.</p>
+                        <button onclick="toggleCartDrawer(false)" class="bg-amazon-btnYellow hover:bg-amazon-btnYellowHover text-amazon-dark font-bold text-xs px-4 py-2 rounded-full">
+                            Seguir comprando
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            checkoutBtn.disabled = false;
+            container.innerHTML = cart.map(item => `
+                <div class="flex gap-3 bg-white border border-gray-200 rounded-md p-3 shadow-sm">
+                    <div class="w-20 h-20 bg-gray-50 rounded flex items-center justify-center shrink-0 p-1">
+                        ${getProductIllustration(item.svgType)}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs sm:text-sm font-semibold text-gray-900 line-clamp-2">${item.name}</h4>
+                        <p class="text-sm font-extrabold text-gray-900 mt-1">$${(item.price * item.qty).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                        <span class="text-[11px] text-emerald-600 font-semibold block">En stock • Envío Gratis</span>
+
+                        <!-- Controles de cantidad -->
+                        <div class="flex items-center justify-between mt-2">
+                            <div class="inline-flex items-center border border-gray-300 rounded-full bg-gray-50 overflow-hidden">
+                                <button onclick="updateQty(${item.id}, -1)" class="px-2.5 py-0.5 hover:bg-gray-200 text-gray-700 font-bold text-xs">
+                                    ${item.qty === 1 ? '<i class="fa-regular fa-trash-can text-red-600"></i>' : '-'}
+                                </button>
+                                <span class="px-2.5 text-xs font-bold text-gray-900">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="px-2.5 py-0.5 hover:bg-gray-200 text-gray-700 font-bold text-xs">+</button>
+                            </div>
+                            <button onclick="removeFromCart(${item.id})" class="text-xs text-amazon-blueLink hover:underline">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCartDrawer(open) {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+            if (open) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => drawer.classList.remove('translate-x-full'), 10);
+            } else {
+                drawer.classList.add('translate-x-full');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            const total = document.getElementById('cart-subtotal').textContent;
+            cart = [];
+            saveCart();
+            toggleCartDrawer(false);
+            showToast(`¡Compra procesada con éxito por ${total}! Gracias por elegir ElectroTop.`);
+        }
+
+        function openQuickView(productId) {
+            const p = products.find(item => item.id === productId);
+            if (!p) return;
+
+            const modal = document.getElementById('quickview-modal');
+            const content = document.getElementById('quickview-content');
+
+            content.innerHTML = `
+                <div class="bg-gray-50 p-6 flex items-center justify-center min-h-[260px]">
+                    <div class="scale-125">${getProductIllustration(p.svgType)}</div>
+                </div>
+                <div class="p-6 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-amazon-blueLink uppercase">${p.category}</span>
+                        <h3 class="text-lg font-bold text-gray-900 mt-1">${p.name}</h3>
+                        <div class="flex items-center gap-2 mt-1.5">
+                            <div>${renderStars(p.rating)}</div>
+                            <span class="text-xs text-gray-500">(${p.reviews.toLocaleString()} valoraciones)</span>
+                        </div>
+                        <hr class="my-3">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-extrabold text-gray-900">$${p.price.toFixed(2)}</span>
+                            ${p.oldPrice ? `<span class="text-xs text-gray-500 line-through">$${p.oldPrice.toFixed(2)}</span>` : ''}
+                        </div>
+                        <p class="text-xs text-emerald-700 font-semibold mt-1">
+                            <i class="fa-solid fa-bolt text-amazon-orange"></i> ElectroPrime: Envío GRATIS disponible
+                        </p>
+                        <p class="text-xs text-gray-600 mt-3 leading-relaxed">
+                            <strong>Especificaciones destacadas:</strong> ${p.specs}
+                        </p>
+                    </div>
+                    <div class="mt-5 flex flex-col gap-2">
+                        <button onclick="addToCart(${p.id}); closeQuickView();" class="w-full bg-amazon-btnYellow hover:bg-amazon-btnYellowHover text-amazon-dark font-bold py-2.5 rounded-full text-sm shadow-sm transition">
+                            Agregar al carrito
+                        </button>
+                        <button onclick="addToCart(${p.id}); closeQuickView(); toggleCartDrawer(true);" class="w-full bg-amazon-btnOrange hover:bg-amazon-btnOrangeHover text-amazon-dark font-bold py-2.5 rounded-full text-sm shadow-sm transition">
+                            Comprar ahora
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeQuickView() {
+            const modal = document.getElementById('quickview-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                if (i === index) {
+                    slide.classList.remove('opacity-0', 'pointer-events-none');
+                    slide.classList.add('opacity-100');
+                } else {
+                    slide.classList.remove('opacity-100');
+                    slide.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 6500);
+
+        function openLocationModal() {
+            document.getElementById('location-modal').classList.remove('hidden');
+            document.getElementById('location-modal').classList.add('flex');
+        }
+        function closeLocationModal() {
+            document.getElementById('location-modal').classList.add('hidden');
+            document.getElementById('location-modal').classList.remove('flex');
+        }
+        function saveLocation() {
+            const val = document.getElementById('country-select').value;
+            document.getElementById('user-location').textContent = val;
+            closeLocationModal();
+            showToast(`Ubicación actualizada a: ${val}`);
+        }
+
+        function openAccountModal() {
+            document.getElementById('account-modal').classList.remove('hidden');
+            document.getElementById('account-modal').classList.add('flex');
+        }
+        function closeAccountModal() {
+            document.getElementById('account-modal').classList.add('hidden');
+            document.getElementById('account-modal').classList.remove('flex');
+        }
+        function handleLogin(e) {
+            e.preventDefault();
+            const name = document.getElementById('login-name').value.trim();
+            if (name) {
+                document.getElementById('account-greeting').textContent = `Hola, ${name.split(' ')[0]}`;
+                closeAccountModal();
+                showToast(`¡Bienvenido a ElectroTop, ${name}!`);
+            }
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3200);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>
